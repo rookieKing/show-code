@@ -1,0 +1,121 @@
+
+<link rel="stylesheet" href="./node_modules/codemirror/lib/codemirror.css" />
+<script src="./node_modules/codemirror/lib/codemirror.js"></script>
+<script src="./node_modules/codemirror/mode/css/css.js"></script>
+<script src="./node_modules/codemirror/mode/javascript/javascript.js"></script>
+<script src="./node_modules/codemirror/mode/markdown/markdown.js"></script>
+<textarea id="code-css"></textarea>
+<textarea id="code-js"></textarea>
+<textarea id="code-markdown"></textarea>
+<script>
+    var css = `
+/* Some example CSS */
+
+@import url("something.css");
+
+body {
+    margin: 0;
+    padding: 3em 6em;
+    font-family: tahoma, arial, sans-serif;
+    color: #000;
+}
+
+#navigation a {
+    font-weight: bold;
+    text-decoration: none !important;
+}
+
+h1 {
+    font-size: 2.5em;
+}
+
+h2 {
+    font-size: 1.7em;
+}
+
+h1:before, h2:before {
+    content: "::";
+}
+
+code {
+    font-family: courier, monospace;
+    font-size: 80%;
+    color: #418A8A;
+}`
+var js = `
+// Demo code (the actual new parser character stream implementation)
+
+function StringStream(string) {
+    this.pos = 0;
+    this.string = string;
+}
+
+StringStream.prototype = {
+    done: function() {return this.pos >= this.string.length;},
+    peek: function() {return this.string.charAt(this.pos);},
+    next: function() {
+    if (this.pos < this.string.length)
+        return this.string.charAt(this.pos++);
+    },
+    eat: function(match) {
+    var ch = this.string.charAt(this.pos);
+    if (typeof match == "string") var ok = ch == match;
+    else var ok = ch && match.test ? match.test(ch) : match(ch);
+    if (ok) {this.pos++; return ch;}
+    },
+    eatWhile: function(match) {
+    var start = this.pos;
+    while (this.eat(match));
+    if (this.pos > start) return this.string.slice(start, this.pos);
+    },
+    backUp: function(n) {this.pos -= n;},
+    column: function() {return this.pos;},
+    eatSpace: function() {
+    var start = this.pos;
+    while (/\s/.test(this.string.charAt(this.pos))) this.pos++;
+    return this.pos - start;
+    },
+    match: function(pattern, consume, caseInsensitive) {
+    if (typeof pattern == "string") {
+        function cased(str) {return caseInsensitive ? str.toLowerCase() : str;}
+        if (cased(this.string).indexOf(cased(pattern), this.pos) == this.pos) {
+        if (consume !== false) this.pos += str.length;
+        return true;
+        }
+    }
+    else {
+        var match = this.string.slice(this.pos).match(pattern);
+        if (match && consume !== false) this.pos += match[0].length;
+        return match;
+    }
+    }
+};`;
+    var editor1 = CodeMirror.fromTextArea(document.getElementById("code-css"), {
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: "text/css",
+        lineWrapping: true
+    });
+    editor1.setValue(css);
+    var editor2 = CodeMirror.fromTextArea(document.getElementById("code-js"), {
+        matchBrackets: true,
+        autoCloseBrackets: true,
+        mode: "text/javascript",
+        lineWrapping: true
+    });
+    editor2.setValue(js);
+    var editor3 = CodeMirror.fromTextArea(document.getElementById("code-markdown"), {
+        mode: 'markdown',
+        lineNumbers: true,
+        theme: "default",
+        extraKeys: {"Enter": "newlineAndIndentContinueMarkdownList"}
+    });
+    editor3.setValue(`# hello world`);
+</script>
+<!--
+    http://codemirror.net/doc/manual.html
+    http://codemirror.net/mode/css/
+    http://codemirror.net/mode/javascript/
+    http://codemirror.net/mode/markdown/
+    https://github.com/markedjs/marked
+-->
