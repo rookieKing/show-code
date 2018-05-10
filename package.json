@@ -8,9 +8,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
-    "vue": "^2.5.2",
     "codemirror": "^5.37.0",
-    "marked": "^0.3.19"
+    "github-markdown-css": "^2.10.0",
+    "marked": "^0.3.19",
+    "vue": "^2.5.2"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
