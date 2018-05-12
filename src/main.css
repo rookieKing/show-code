@@ -5,10 +5,26 @@ body {
 #cssEditor {
     height: 100vh;
 }
-.cm-s-default .cm-comment,
-.cm-s-default .cm-builtin,
-.cm-s-default .cm-number,
-.cm-s-default .cm-error,
-.cm-s-default .cm-atom {
+#mdEditor {
+    height: 45vh;
+    border: 1px solid;
+    margin: .5em 1em;
+}
+.cm-header {
+    font-weight: normal;
+}
+#mdHTML {
+    height: 45vh;
+    margin: .5em 1em;
+    overflow: auto;
+}
+.markdown-body h1 {
+    border: none;
+}
+.markdown-body blockquote {
     color: #000;
+    border: none;
+}
+.markdown-body pre {
+    background: none;
 }
