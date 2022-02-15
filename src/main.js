@@ -1,8 +1,8 @@
-import './rookie.tool';
+import { sleep } from '@rookiecode/common';
 import 'codemirror/lib/codemirror.css';
 import 'github-markdown-css';
 import './main.css';
-import marked from 'marked';
+import { marked } from 'marked';
 import CodeMirror from 'codemirror';
 import 'codemirror/mode/css/css';
 import 'codemirror/mode/markdown/markdown';
@@ -75,20 +75,20 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
   var cssEditor = createCssEditor();
   await write(cssContentBefore, cssEditor, appendStyle);
   var mdEditor = createMdEditor();
-  await delay(1000);
+  await sleep(1000);
   await write(markdownContentBefore, mdEditor);
   await write(cssContentAfter, cssEditor, appendStyle);
-  await delay(1000);
+  await sleep(1000);
   await write(markdownContentAfter, mdEditor);
   await write(`/* markdown 转 HTML */\n`, cssEditor, appendStyle);
-  await delay(1000);
+  await sleep(1000);
   var mdContent = mdEditor.getValue();
   mdEditor.display.wrapper.remove();
   var mdEl = document.createElement('div');
   mdEl.id = 'mdHTML';
   mdEl.className = 'markdown-body';
   mdEl.innerHTML = marked(mdContent);
-  document.body.append(mdEl);
+  app.append(mdEl);
   await write(cssContentEnd, cssEditor, appendStyle);
 
   function appendStyle(char) {
@@ -128,7 +128,7 @@ async function write(content, editor, callback) {
   var curContent = editor.getValue();
   var i = 0, l = content.length, tmp = curContent;
   for (; i < l; i++) {
-    await delay(10);
+    await sleep(10);
     tmp += content[i];
     editor.setValue(tmp);
     editor.setCursor(editor.lineCount());
