@@ -1,6 +1,8 @@
 # show-code
 
-> show-code project
+> show-code project 
+
+> master 分支持续部署 https://rookieking.github.io/show-code/
 
 ## Build Setup
 
